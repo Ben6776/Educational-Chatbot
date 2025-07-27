@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>BERT Chatbot</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; }
+    input, button { padding: 0.5rem; font-size: 1rem; }
+    #chatbox { margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>BERT Chatbot</h1>
+  <input type="text" id="questionInput" placeholder="Ask a question..." size="50"/>
+  <button onclick="askQuestion()">Ask</button>
+  <div id="chatbox"></div>
+
+  <script>
+    async function askQuestion() {
+      const question = document.getElementById("questionInput").value;
+      const response = await fetch("http://127.0.0.1:8000/ask", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question })
+      });
+
+      const data = await response.json();
+      document.getElementById("chatbox").innerHTML =
+        `<p><strong>You:</strong> ${question}</p><p><strong>Bot:</strong> ${data.answer}</p>`;
+    }
+  </script>
+</body>
+</html>
